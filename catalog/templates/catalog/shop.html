@@ -1,16 +1,27 @@
-{% extends 'base.html' %}
+<h1>Shop</h1>
 
-{% block title %}Shop - VicStore{% endblock %}
-
-{% block content %}
-    <h1 class="catalog-title">Shop</h1>
-    <div class="products">
-        {% for product in products %}
-            <div class="product">
-                <h2>{{ product.name }}</h2>
-                <p>${{ product.price }}</p>
-                <a href="{% url 'add_to_cart' product.slug %}" class="button">Add to Cart</a>
-            </div>
+<form method="get" action="{% url 'shop' %}">
+    <select name="category">
+        <option value="">All Categories</option>
+        {% for category in categories %}
+            <option value="{{ category.slug }}">{{ category.name }}</option>
         {% endfor %}
+    </select>
+    <select name="sort_by">
+        <option value="">Sort by</option>
+        <option value="price_asc">Price: Low to High</option>
+        <option value="price_desc">Price: High to Low</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<div class="products">
+    {% for product in products %}
+    <div class="product">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <h3>{{ product.name }}</h3>
+        <p>${{ product.price }}</p>
+        <a href="{% url 'add_to_cart' product.slug %}">Add to Cart</a>
     </div>
-{% endblock %}
+    {% endfor %}
+</div>

@@ -1,16 +1,26 @@
-{% extends 'base.html' %}
+<!-- catalog/templates/catalog/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Store</title>
+</head>
+<body>
+    <h1>Welcome to Our Store!</h1>
 
-{% block title %}Home - VicStore{% endblock %}
-
-{% block content %}
-    <h1 class="catalog-title">Welcome to VicStore</h1>
+    <h2>Our Products:</h2>
     <div class="products">
         {% for product in products %}
             <div class="product">
-                <h2>{{ product.name }}</h2>
-                <p>${{ product.price }}</p>
-                <a href="{% url 'add_to_cart' product.slug %}" class="button">Add to Cart</a>
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p>Price: ${{ product.price }}</p>
+                <a href="{% url 'add_to_cart' product.slug %}">Add to Cart</a>
             </div>
+        {% empty %}
+            <p>No products available.</p>
         {% endfor %}
     </div>
-{% endblock %}
+</body>
+</html>
