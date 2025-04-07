@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - VicStore{% endblock %}
+
+{% block content %}
+    <h1 class="catalog-title">Welcome to VicStore</h1>
+    <div class="products">
+        {% for product in products %}
+            <div class="product">
+                <h2>{{ product.name }}</h2>
+                <p>${{ product.price }}</p>
+                <a href="{% url 'add_to_cart' product.slug %}" class="button">Add to Cart</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

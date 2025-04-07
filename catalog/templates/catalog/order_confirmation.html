@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmation - MyStore{% endblock %}
+
+{% block content %}
+    <h1>Order Placed Successfully!</h1>
+    <p>Your order has been successfully placed. Thank you for shopping with us!</p>
+    <p>We'll send you an email with the order details shortly.</p>
+
+    <p><a href="{% url 'home' %}">Go back to Home</a></p>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Cart - VicStore{% endblock %}
+
+{% block content %}
+    <h1 class="catalog-title">Your Cart</h1>
+    <ul>
+        {% for item in cart.values %}
+            <li>
+                <h3>{{ item.name }}</h3>
+                <p>${{ item.price }} x {{ item.quantity }}</p>
+
+                {% if item.slug %}
+                    <!-- Decrease Quantity Button -->
+                    <form method="get" action="{% url 'update_cart' slug=item.slug %}" style="display: inline-block;">
+                        <button type="submit" name="action" value="decrease" {% if item.quantity <= 1 %}disabled{% endif %}>➖</button>
+                    </form>
+
+                    <!-- Display Current Quantity -->
+                    <span>{{ item.quantity }}</span>
+
+                    <!-- Increase Quantity Button -->
+                    <form method="get" action="{% url 'update_cart' slug=item.slug %}" style="display: inline-block;">
+                        <button type="submit" name="action" value="increase">➕</button>
+                    </form>
+
+                    <!-- Remove Item Link -->
+                    <a href="{% url 'remove_from_cart' slug=item.slug %}" class="button">Remove</a>
+                {% else %}
+                    <p class="text-danger">This item is missing a valid slug and cannot be updated or removed.</p>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No items in your cart.</li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Total: ${{ total_price }}</strong></p>
+    <a href="{% url 'checkout' %}" class="button">Proceed to Checkout</a>
+{% endblock %}

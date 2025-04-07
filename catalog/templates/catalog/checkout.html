@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - VicStore{% endblock %}
+
+{% block content %}
+    <h1 class="catalog-title">Checkout</h1>
+    <p>Review your order below:</p>
+
+    <h3>Order Summary</h3>
+    <ul>
+        {% for item in cart.values %}
+            <li>{{ item.name }} - ${{ item.price }} x {{ item.quantity }}</li>
+        {% empty %}
+            <li>No items in your cart.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Total: ${{ total_price }}</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="shipping_address">Shipping Address:</label>
+            <input type="text" id="shipping_address" name="shipping_address" required class="input-field">
+        </div>
+
+        <div>
+            <label for="payment_method">Payment Method:</label>
+            <select id="payment_method" name="payment_method" class="input-field">
+                <option value="credit_card">Credit Card</option>
+                <option value="paypal">PayPal</option>
+            </select>
+        </div>
+
+        <button type="submit" class="button">Place Order</button>
+    </form>
+{% endblock %}
