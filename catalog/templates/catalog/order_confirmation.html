@@ -1,11 +1,31 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="confirmation-container">
+        <h1 class="store-title">Thank you for your order!</h1>
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+        <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
 
-{% block title %}Order Confirmation - MyStore{% endblock %}
+        <h2>Items:</h2>
+        <ul class="cart-items-list">
+            {% for item in order.items.all %}
+                <li class="cart-item">
+                    <span>{{ item.product.name }} (x{{ item.quantity }})</span> - 
+                    <span class="product-price">${{ item.price|floatformat:2 }}</span>
+                </li>
+            {% endfor %}
+        </ul>
 
-{% block content %}
-    <h1>Order Placed Successfully!</h1>
-    <p>Your order has been successfully placed. Thank you for shopping with us!</p>
-    <p>We'll send you an email with the order details shortly.</p>
+        <p class="total-price"><strong>Total:</strong> ${{ order.total_price }}</p>
 
-    <p><a href="{% url 'home' %}">Go back to Home</a></p>
-{% endblock %}
+        <a href="{% url 'home' %}" class="checkout-btn">Back to Home</a>
+    </div>
+</body>
+</html>

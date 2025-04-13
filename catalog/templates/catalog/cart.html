@@ -1,26 +1,46 @@
+{% load static %}
 {% load custom_filters %}
 
-<h1>Your Cart</h1>
-<ul>
-    {% for item in cart.values %}
-        <li>
-            <h3>{{ item.name }}</h3>
-            <p>${{ item.price }} x {{ item.quantity }}</p>
-            <p>Total: ${{ item.quantity|multiply:item.price }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="cart-container">
+        <h1>Your Cart</h1>
 
-            <form method="get" action="{% url 'update_cart' slug=item.slug %}" style="display: inline-block;">
-                <button type="submit" name="action" value="increase">➕</button>
-            </form>
-            <span>{{ item.quantity }}</span>
-            <form method="get" action="{% url 'update_cart' slug=item.slug %}" style="display: inline-block;">
-                <button type="submit" name="action" value="decrease" {% if item.quantity <= 1 %}disabled{% endif %}>➖</button>
-            </form>
+        {% if cart_items %}
+            {% for item in cart_items %}
+                <div class="cart-item">
+                    <p><strong>{{ item.product.name }}</strong> — ${{ item.product.price }}</p>
 
-            <a href="{% url 'remove_from_cart' slug=item.slug %}" class="button">Remove</a>
-        </li>
-    {% empty %}
-        <li>No items in your cart.</li>
-    {% endfor %}
-</ul>
-<p><strong>Total: ${{ total_price }}</strong></p>
-<a href="{% url 'checkout' %}" class="button">Proceed to Checkout</a>
+                    <form action="{% url 'update_cart' item.product.id %}" method="POST" class="quantity-form">
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="decrease">-</button>
+                        <input type="text" name="quantity" value="{{ item.quantity }}" size="1" readonly>
+                        <button type="submit" name="action" value="increase">+</button>
+                    </form>
+
+                    <form action="{% url 'remove_from_cart' item.product.id %}" method="POST" class="remove-form">
+                        {% csrf_token %}
+                        <button type="submit">Remove</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No items in your cart.</p>
+        {% endif %}
+
+        {% if total_price %}
+            <div class="total-price">Total: ${{ total_price }}</div>
+            <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+        {% endif %}
+        
+        <a href="{% url 'home' %}" class="continue-btn">← Continue Shopping</a>
+    </div>
+</body>
+</html>

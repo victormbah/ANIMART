@@ -1,125 +1,189 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Item, Category
-from django.http import HttpResponse
-from .forms import CheckoutForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from .models import Product, Order, OrderItem
+from django.template.loader import get_template
+from django.contrib.auth import logout
+from django.views.decorators.http import require_POST
 
-# Home Page: Display products
+# Home Page
 def home(request):
-    products = Item.objects.all()
-    return render(request, 'catalog/home.html', {
-        'products': products
-    })
+    products = Product.objects.all()
+    return render(request, 'catalog/home.html', {'products': products})
 
-# Cart Page: Display the current cart (using session)
-def cart(request):
-    cart = request.session.get('cart', {})
-    total_price = sum(float(item['price']) * item['quantity'] for item in cart.values())
-    return render(request, 'catalog/cart.html', {
-        'cart': cart,
-        'total_price': total_price,
-    })
+# Register Page
+def register(request):
+    return render(request, 'catalog/register.html')
 
-# Add to Cart: Add a product to the session-based cart
-def add_to_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
-    cart = request.session.get('cart', {})
-
-    if slug in cart:
-        cart[slug]['quantity'] += 1
+# User Login
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+        else:
+            return HttpResponse('Invalid login credentials', status=400)
     else:
-        cart[slug] = {
-            'name': item.name,
-            'price': str(item.price),
-            'quantity': 1,
-            'slug': slug,
-        }
+        form = AuthenticationForm()
+    return render(request, 'catalog/login.html', {'form': form})
+
+# User Logout
+@require_POST
+def user_logout(request):
+    logout(request)  # Logs out the user
+    return redirect('home')
+
+# Profile Page (currently redirects to home)
+@login_required
+def profile(request):
+    return render(request, 'catalog/home.html')
+
+# Add to Cart
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart = request.session.get('cart', {})
+
+    product_id_str = str(product.id)
+    cart[product_id_str] = cart.get(product_id_str, 0) + 1
 
     request.session['cart'] = cart
-    request.session.modified = True
-    return redirect('cart')
+    return redirect('view_cart')
 
-# Checkout Page: Display checkout form
+# Remove from Cart
+def remove_from_cart(request, product_id):
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+
+    if product_id_str in cart:
+        del cart[product_id_str]
+
+    request.session['cart'] = cart
+    return redirect('view_cart')
+
+# View Cart
+def view_cart(request):
+    cart = request.session.get('cart', {})
+    cart_items = []
+    total_price = 0
+
+    for product_id, quantity in cart.items():
+        try:
+            product = Product.objects.get(id=int(product_id))
+            subtotal = product.price * quantity
+            total_price += subtotal
+            cart_items.append({
+                'product': product,
+                'quantity': quantity,
+                'subtotal': subtotal
+            })
+        except Product.DoesNotExist:
+            continue
+
+    return render(request, 'catalog/cart.html', {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'cart': cart,
+    })
+
+# Update Cart Quantity (Increase/Decrease)
+@csrf_exempt
+def update_cart(request, product_id):
+    cart = request.session.get('cart', {})
+    product_id_str = str(product_id)
+
+    if product_id_str in cart:
+        action = request.POST.get('action')
+        if action == 'increase':
+            cart[product_id_str] += 1
+        elif action == 'decrease':
+            cart[product_id_str] -= 1
+            if cart[product_id_str] <= 0:
+                del cart[product_id_str]
+
+    request.session['cart'] = cart
+    return redirect('view_cart')
+
+# Checkout Page
+@login_required
 def checkout(request):
     cart = request.session.get('cart', {})
-    total_price = sum(float(item['price']) * item['quantity'] for item in cart.values())
-    form = CheckoutForm()
+    cart_items = []
+    total_price = 0
 
-    if request.method == 'POST' and form.is_valid():
-        shipping_address = form.cleaned_data['shipping_address']
-        phone_number = form.cleaned_data['phone_number']
-        email = form.cleaned_data['email']
-        payment_method = form.cleaned_data['payment_method']
-        return redirect('order_confirmation')
+    for product_id, quantity in cart.items():
+        try:
+            product = Product.objects.get(id=int(product_id))
+            subtotal = product.price * quantity
+            total_price += subtotal
+            cart_items.append({
+                'product': product,
+                'quantity': quantity,
+                'subtotal': subtotal
+            })
+        except Product.DoesNotExist:
+            continue
 
     return render(request, 'catalog/checkout.html', {
-        'cart': cart,
-        'total_price': total_price,
-        'form': form,
+        'cart_items': cart_items,
+        'total_price': total_price
     })
 
-# Shop Page: Display all products with filtering and sorting options
-def shop(request):
-    products = Item.objects.all()
-    categories = Category.objects.all()  # Get all categories for filter
-    category_slug = request.GET.get('category')
-    sort_by = request.GET.get('sort_by')
+# Place Order
+@login_required
+def place_order(request):
+    if request.method == 'POST':
+        cart = request.session.get('cart', {})
+        if not cart:
+            return redirect('view_cart')
 
-    if category_slug:
-        products = products.filter(category__slug=category_slug)
+        shipping_address = request.POST.get('shipping_address')
+        payment_method = request.POST.get('payment_method')
 
-    if sort_by == 'price_asc':
-        products = products.order_by('price')
-    elif sort_by == 'price_desc':
-        products = products.order_by('-price')
+        order = Order.objects.create(
+            user=request.user,
+            shipping_address=shipping_address,
+            payment_method=payment_method
+        )
 
-    return render(request, 'catalog/shop.html', {
-        'products': products,
-        'categories': categories,
-    })
+        for product_id, quantity in cart.items():  # ✅ quantity is int
+            product = get_object_or_404(Product, id=int(product_id))
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=quantity,
+                price=product.price
+            )
 
-# Contact Page: Display a contact form
-def contact(request):
-    return render(request, 'catalog/contact.html')
+        request.session['cart'] = {}
 
-# Order Confirmation Page: Display a success message after order is placed
-def order_confirmation(request):
-    return render(request, 'catalog/order_confirmation.html')
+        return redirect('order_confirmation', order_id=order.id)
 
-# Update Cart: Update the quantity of a product in the cart
-def update_cart(request, slug):
-    item = get_object_or_404(Item, slug=slug)
+    return redirect('view_cart')
+
+# Order Confirmation
+@login_required
+def order_confirmation(request, order_id):
+    print(get_template('catalog/order_confirmation.html'))  # Debugging
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'catalog/order_confirmation.html', {'order': order})
+
+# AJAX Add to Cart (optional use for dynamic frontend)
+def ajax_add_to_cart(request, product_id):
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        return JsonResponse({'error': 'Product not found'}, status=404)
+
     cart = request.session.get('cart', {})
-    action = request.GET.get('action')
+    product_id_str = str(product.id)
+    cart[product_id_str] = cart.get(product_id_str, 0) + 1
 
-    if slug in cart:
-        if action == 'increase':
-            cart[slug]['quantity'] += 1
-        elif action == 'decrease' and cart[slug]['quantity'] > 1:
-            cart[slug]['quantity'] -= 1
-        elif action == 'decrease' and cart[slug]['quantity'] == 1:
-            del cart[slug]
-    
     request.session['cart'] = cart
-    request.session.modified = True
-    return redirect('cart')
-
-# Remove from Cart: Remove an item from the cart
-def remove_from_cart(request, slug):
-    cart = request.session.get('cart', {})
-    if slug in cart:
-        del cart[slug]
-    
-    request.session['cart'] = cart
-    request.session.modified = True
-    return redirect('cart')
-
-# Category List Page: Display all categories
-def category_list(request):
-    categories = Category.objects.all()  # Get all categories
-    return render(request, 'catalog/category_list.html', {
-        'categories': categories
+    return JsonResponse({
+        'cart_count': sum(cart.values())
     })
-
-
-
-

@@ -2,27 +2,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}E-Commerce{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}VicStore{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <a href="{% url 'home' %}" {% if request.path == '/' or request.path|slice:":5" == '/shop' %} class="active" {% endif %}>Home</a> |
-        <a href="{% url 'shop' %}" {% if request.path|slice:":5" == '/shop' %} class="active" {% endif %}>Shop</a> |
-        <a href="{% url 'cart' %}" {% if request.path|slice:":6" == '/cart/' %} class="active" {% endif %}>Cart</a> |
-        <a href="{% url 'checkout' %}" {% if request.path|slice:":9" == '/checkout' %} class="active" {% endif %}>Checkout</a>
-    </nav>
+    <!-- Navbar -->
+    <header class="navbar">
+        <nav class="navbar-container">
+            <div class="logo">
+                <a href="{% url 'home' %}" class="navbar-logo">VicStore</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}" class="nav-item">Home</a></li>
+                <li><a href="{% url 'catalog' %}" class="nav-item">Catalog</a></li>
+                <li><a href="{% url 'cart' %}" class="nav-item">Cart</a></li>
+                <li><a href="{% url 'checkout' %}" class="nav-item">Checkout</a></li>
+            </ul>
+            <div class="auth-links">
+                {% if user.is_authenticated %}
+                    <span class="welcome-msg">Hi, {{ user.username }}</span>
+                    <a href="{% url 'logout' %}" class="auth-link">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="auth-link">Login</a>
+                    <a href="{% url 'register' %}" class="auth-link">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
 
-    <hr>
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
 
-    <!-- Page-specific content -->
-    {% block content %}{% endblock %}
-
+    <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2025 Vic E-Commerce</p>
+        <p>&copy; 2025 VicStore. All rights reserved.</p>
     </footer>
 </body>
 </html>

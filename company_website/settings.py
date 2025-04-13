@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalog',  # Add the catalog app
+    'catalog', 
 ]
 
 MIDDLEWARE = [
@@ -30,7 +30,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'company_website.urls'  # This should match your root project folder (company_website)
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = 'login'
+
+ROOT_URLCONF = 'company_website.urls'  
 
 TEMPLATES = [
     {
@@ -85,3 +91,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 WSGI_APPLICATION = 'company_website.wsgi.application'
 
 TIMEZONE_NOW = timezone.now()  # Ensures we are using the correct timezone for order timestamps.
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item
+from .models import Product
 # from .models import Order, OrderItem
 
 class ItemAdmin(admin.ModelAdmin):
@@ -7,8 +7,6 @@ class ItemAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'discount_price', 'slug']  # Include 'discount_price' in the list
 
 # Registering models with the admin
-admin.site.register(Item, ItemAdmin)
-# admin.site.register(Order)
-# admin.site.register(OrderItem)
+admin.site.register(Product)
 
  

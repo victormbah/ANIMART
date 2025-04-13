@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | VicStore</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="header">
+        <h1 class="store-title">Welcome Back to VicStore!</h1>
+    </header>
+
+    <section class="auth-section">
+        <div class="auth-container">
+            <h2 class="auth-title">Login</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                <!-- Display error messages -->
+                {% if form.errors %}
+                    <div class="error-message">
+                        <p>Incorrect username or password. Please try again.</p>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" class="input-field" required>
+                </div>
+                <button type="submit" class="auth-btn">Login</button>
+            </form>
+
+            <p class="redirect-link">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+        </div>
+    </section>
+</body>
+</html>

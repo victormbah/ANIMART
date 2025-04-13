@@ -1,49 +1,57 @@
-{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Checkout</h1>
+        <p class="description">Review your order below:</p>
 
-{% load custom_filters %} 
-
-{% block title %}Checkout - VicStore{% endblock %}
-
-{% block content %}
-    <section class="checkout-container">
-        <h1 class="catalog-title">Checkout</h1>
-        <p class="checkout-intro">Review and confirm your order before proceeding to payment.</p>
-
-        <div class="order-summary">
-            <h3>Order Summary</h3>
-            <ul>
-                {% for item in cart.values %}
+        <h3 class="section-title">Order Summary</h3>
+        <ul class="cart-items">
+            {% if cart_items %}
+                {% for item in cart_items %}
                     <li>
-                        <span class="item-name">{{ item.name }}</span> - 
-                        <span class="item-price">${{ item.price }}</span> x 
-                        <span class="item-quantity">{{ item.quantity }}</span>
-                        <span class="item-total">= ${{ item.price|multiply:item.quantity }}</span>
+                        <div class="cart-item">
+                            <h3>{{ item.product.name }}</h3>
+                            <p>${{ item.product.price }} x {{ item.quantity }}</p>
+                            <p>Total: ${{ item.subtotal|floatformat:2 }}</p>
+                        </div>
                     </li>
-                {% empty %}
-                    <li>No items in your cart.</li>
                 {% endfor %}
-            </ul>
-            <div class="total-price">
-                <h3>Total: ${{ total_price }}</h3>
-            </div>
-        </div>
+            {% else %}
+                <li>No items in your cart.</li>
+            {% endif %}
+        </ul>
 
-        <form method="POST" class="checkout-form">
+        <h3 class="total-price">Total: ${{ total_price|floatformat:2 }}</h3>
+
+        <form method="POST" action="{% url 'place_order' %}" class="checkout-form">
+
             {% csrf_token %}
             <div class="form-group">
-                <label for="shipping_address" class="form-label">Shipping Address:</label>
-                <input type="text" id="shipping_address" name="shipping_address" required class="input-field" placeholder="Enter your shipping address">
+                <label for="shipping_address">Shipping Address:</label>
+                <input type="text" id="shipping_address" name="shipping_address" required class="input-field">
             </div>
 
             <div class="form-group">
-                <label for="payment_method" class="form-label">Payment Method:</label>
+                <label for="payment_method">Payment Method:</label>
                 <select id="payment_method" name="payment_method" class="input-field">
                     <option value="credit_card">Credit Card</option>
                     <option value="paypal">PayPal</option>
                 </select>
             </div>
 
-            <button type="submit" class="button submit-button">Place Order</button>
+            <button type="submit" class="checkout-btn">Place Order</button>
         </form>
-    </section>
-{% endblock %}
+
+        <a href="{% url 'view_cart' %}" class="continue-btn">← Back to Cart</a>
+    </div>
+</body>
+</html>

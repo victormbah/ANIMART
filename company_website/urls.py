@@ -2,13 +2,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from catalog import views  # Make sure to import the views here
+from catalog import views
+from django.contrib.auth import views as auth_views  
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('catalog/', include('catalog.urls')),
-    path('', views.home, name='home'),  # Added closing comma and closing square bracket for the list
+    path('', views.home, name='home'),
+    path('login/', auth_views.LoginView.as_view(template_name='catalog/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),  
 ]
 
+# Serve static and media files during development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  
+

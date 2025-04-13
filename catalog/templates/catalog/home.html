@@ -1,26 +1,59 @@
-<!-- catalog/templates/catalog/home.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Our Store</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>Welcome to Our Store!</h1>
+    <header class="header">
+        <h1 class="store-title">Welcome to Our Store!</h1>
 
-    <h2>Our Products:</h2>
-    <div class="products">
-        {% for product in products %}
-            <div class="product">
-                <h3>{{ product.name }}</h3>
-                <p>{{ product.description }}</p>
-                <p>Price: ${{ product.price }}</p>
-                <a href="{% url 'add_to_cart' product.slug %}">Add to Cart</a>
-            </div>
-        {% empty %}
-            <p>No products available.</p>
-        {% endfor %}
-    </div>
+        {% if user.is_authenticated %}
+            <p class="greeting">Hello, {{ user.username }}!</p>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="auth-link" style="background:none; border:none; padding:0; color:blue; cursor:pointer;">
+                    Logout
+                </button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="auth-link">Login</a> | 
+            <a href="{% url 'register' %}" class="auth-link">Register</a>
+        {% endif %}
+    </header>
+
+    <!-- Displaying Products -->
+    <section class="products-section">
+        <h2 class="section-title">Our Products</h2>
+        <div class="products">
+            {% for product in products %}
+                <div class="product">
+                    <div class="product-image">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'images/default.jpg' %}" alt="No image available">
+                        {% endif %}
+                    </div>
+                    <div class="product-details">
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.description }}</p>
+                        <p class="product-price">$ {{ product.price }}</p>
+
+                        <!-- Add to Cart Button -->
+                        <form action="{% url 'add_to_cart' product.id %}" method="POST" class="add-to-cart-form">
+                            {% csrf_token %}
+                            <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="no-products">No products available.</p>
+            {% endfor %}
+        </div>
+    </section>
 </body>
 </html>
