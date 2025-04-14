@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 from .views import view_cart
-from django.contrib.auth.views import LogoutView
 urlpatterns = [
     path('', views.home, name='home'),
     path('cart/', view_cart, name='view_cart'),

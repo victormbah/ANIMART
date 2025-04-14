@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Product, ProductImage
 
-class ProductImageInline(admin.TabularInline):  # or StackedInline if you prefer
+class ProductImageInline(admin.TabularInline):  
     model = ProductImage
     extra = 1  # number of extra forms
 

@@ -12,7 +12,7 @@ import requests
 from django.conf import settings
 from .models import Product
 from django.db.models import Q
-
+from django.contrib.auth.forms import UserCreationForm
 # Home Page
 def home(request):
     products = Product.objects.all()
@@ -20,7 +20,14 @@ def home(request):
 
 # Register Page
 def register(request):
-    return render(request, 'catalog/register.html')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # or wherever you want
+    else:
+        form = UserCreationForm()
+    return render(request, 'catalog/register.html', {'form': form})
 
 # User Login
 def user_login(request):
@@ -154,7 +161,7 @@ def place_order(request):
             payment_method=payment_method
         )
 
-        for product_id, quantity in cart.items():  # ✅ quantity is int
+        for product_id, quantity in cart.items():  # quantity is int
             product = get_object_or_404(Product, id=int(product_id))
             OrderItem.objects.create(
                 order=order,
@@ -196,7 +203,7 @@ def start_payment(request):
     if request.method == "POST":
         email = request.user.email
 
-        # 🛒 Get cart from session
+        # Get cart from session
         cart = request.session.get('cart', {})
         cart_total = 0
 
@@ -207,7 +214,7 @@ def start_payment(request):
             except Product.DoesNotExist:
                 continue
 
-        # ✅ Convert to kobo
+        # Convert to kobo
         amount = int(cart_total * 100)
 
         # Store shipping address and payment method in session
@@ -264,8 +271,7 @@ def search_products(request):
             Q(name__icontains=query) | Q(description__icontains=query)
         )
     else:
-        results = Product.objects.all()  # If no query, show all products
-    
+        results = Product.objects.all() 
     return render(request, 'catalog/search_results.html', {
         'results': results,
         'query': query
