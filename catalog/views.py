@@ -8,6 +8,10 @@ from .models import Product, Order, OrderItem
 from django.template.loader import get_template
 from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
+import requests
+from django.conf import settings
+from .models import Product
+from django.db.models import Q
 
 # Home Page
 def home(request):
@@ -187,3 +191,88 @@ def ajax_add_to_cart(request, product_id):
     return JsonResponse({
         'cart_count': sum(cart.values())
     })
+@login_required
+def start_payment(request):
+    if request.method == "POST":
+        email = request.user.email
+
+        # 🛒 Get cart from session
+        cart = request.session.get('cart', {})
+        cart_total = 0
+
+        for product_id, quantity in cart.items():
+            try:
+                product = Product.objects.get(id=int(product_id))
+                cart_total += product.price * quantity
+            except Product.DoesNotExist:
+                continue
+
+        # ✅ Convert to kobo
+        amount = int(cart_total * 100)
+
+        # Store shipping address and payment method in session
+        request.session['shipping_address'] = request.POST.get('shipping_address')
+        request.session['payment_method'] = request.POST.get('payment_method')
+
+        headers = {
+            "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        data = {
+            "email": email,
+            "amount": amount,
+            "callback_url": "http://127.0.0.1:8000/payment/verify/",  # Update to live domain later
+        }
+
+        response = requests.post(
+            'https://api.paystack.co/transaction/initialize',
+            json=data,
+            headers=headers
+        )
+        res_data = response.json()
+
+        if res_data.get('status'):
+            auth_url = res_data['data']['authorization_url']
+            return redirect(auth_url)
+        else:
+            return HttpResponse("Something went wrong during payment initialization")
+
+    return redirect('checkout')
+
+
+def verify_payment(request):
+    ref = request.GET.get('reference')
+
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    }
+
+    response = requests.get(f"https://api.paystack.co/transaction/verify/{ref}", headers=headers)
+    res_data = response.json()
+
+    if res_data['status'] and res_data['data']['status'] == 'success':
+        # Mark order as paid or create a Payment model entry
+        return render(request, 'catalog/payment_success.html', {'payment_data': res_data['data']})
+    else:
+        return render(request, 'catalog/payment_failed.html')
+
+def search_products(request):
+    query = request.GET.get('query', '')
+    if query:
+        results = Product.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )
+    else:
+        results = Product.objects.all()  # If no query, show all products
+    
+    return render(request, 'catalog/search_results.html', {
+        'results': results,
+        'query': query
+    })
+
+def privacy_policy_view(request):
+    return render(request, 'catalog/privacy_policy.html')
+
+def terms_of_service_view(request):
+    return render(request, 'catalog/terms_of_service.html')

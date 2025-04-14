@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - ANIMART</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="store-header">
+        <div class="store-logo">
+            <span class="brand-name">ANIMART</span>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar-container">
+        <form class="search-form" action="{% url 'search_products' %}" method="get">
+            <input type="text" name="query" class="search-input" placeholder="Search for products..." value="{{ query }}">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+
+    <!-- Back to Home Button -->
+    <div class="back-to-home">
+        <a href="{% url 'home' %}" class="back-home-btn">Back to Home</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="products-section">
+        <h2 class="section-title">Search Results for "{{ query }}"</h2>
+        {% if results %}
+            <ul class="products">
+                {% for product in results %}
+                    <li class="product">
+                        <strong>{{ product.name }}</strong> – ₦{{ product.price }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-products">No products found matching your search.</p>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 ANIMART. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

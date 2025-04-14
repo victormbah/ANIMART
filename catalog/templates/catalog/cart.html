@@ -16,7 +16,7 @@
         {% if cart_items %}
             {% for item in cart_items %}
                 <div class="cart-item">
-                    <p><strong>{{ item.product.name }}</strong> — ${{ item.product.price }}</p>
+                    <p><strong>{{ item.product.name }}</strong> — ₦{{ item.product.price }}</p>
 
                     <form action="{% url 'update_cart' item.product.id %}" method="POST" class="quantity-form">
                         {% csrf_token %}
@@ -36,7 +36,7 @@
         {% endif %}
 
         {% if total_price %}
-            <div class="total-price">Total: ${{ total_price }}</div>
+            <div class="total-price">Total: ₦{{ total_price }}</div>
             <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
         {% endif %}
         

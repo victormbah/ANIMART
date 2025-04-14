@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | ANIMART</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="terms-body">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="{% url 'home' %}" class="brand-logo">ANIMART 🉐</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'view_cart' %}">View Cart</a></li>
+            <li><a href="{% url 'terms_of_service' %}" class="active">Terms of Service</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="terms-content">
+        <section class="terms-section">
+            <h1>Terms of Service</h1>
+            <p>Last Updated: April 14, 2025</p>
+
+            <h2>1. Acceptance of Terms</h2>
+            <p>
+                By accessing or using ANIMART, you agree to be bound by these Terms of Service. If you do not agree, please do not use our website or services.
+            </p>
+
+            <h2>2. Use of Our Services</h2>
+            <ul>
+                <li>You must be at least 18 years old or have parental consent to use our services.</li>
+                <li>You agree to use our website only for lawful purposes and in a way that does not violate the rights of others.</li>
+            </ul>
+
+            <h2>3. Product Information & Orders</h2>
+            <p>
+                We strive to display accurate information, but we do not guarantee product descriptions, prices, or availability. We reserve the right to cancel orders in case of errors.
+            </p>
+
+            <h2>4. Payments</h2>
+            <p>
+                All transactions are secure and encrypted. You agree to provide valid payment information and authorize us to charge your payment method.
+            </p>
+
+            <h2>5. Intellectual Property</h2>
+            <p>
+                All content on ANIMART (logos, designs, text, graphics) is owned by or licensed to us and is protected by intellectual property laws.
+            </p>
+
+            <h2>6. Limitation of Liability</h2>
+            <p>
+                We are not liable for any indirect, incidental, or consequential damages resulting from your use of ANIMART.
+            </p>
+
+            <h2>7. Termination</h2>
+            <p>
+                We may suspend or terminate your access to ANIMART at our discretion, especially for violations of these terms.
+            </p>
+
+            <h2>8. Changes to Terms</h2>
+            <p>
+                We may update these Terms of Service periodically. Continued use of Cartly means you accept any changes.
+            </p>
+
+            <h2>9. Contact Us</h2>
+            <p>
+                If you have any questions or concerns about these Terms, please contact us at <a href="mailto:support@animart.com">support@animart.com</a>.
+            </p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; {{ now|date:"Y" }}ANIMART. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a> |
+            <a href="{% url 'terms_of_service' %}">Terms of Service</a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -18,16 +18,11 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
-.store-title {
-    font-size: 3em;
-    color: #3b6e2b;
-    animation: fadeIn 1.5s ease-out;
-}
 
 /* Header */
 .header {
     background-color: #ff9f00;
-    padding: 20px;
+    padding: 5px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -367,4 +362,526 @@ button.add-to-cart-btn:hover {
 
 .checkout-btn:hover {
     background-color: #2980b9;
+}
+
+/* Paystack Button Styling */
+.pay-now-btn {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    margin: 20px auto 0;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s;
+    background-color: #3498db; /* Blue for Paystack */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pay-now-btn:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+    transform: scale(1.05);
+}
+
+.pay-now-btn:active {
+    background-color: #1c598d; /* Even darker blue on click */
+    transform: scale(0.98);
+}
+/* Store Header */
+.store-header {
+    background-color: #ff4500;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.store-logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: white;
+}
+
+.brand-name {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: black;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #ffdd00, #ff6a00);
+    
+    /* Vendor-prefixed background-clip */
+    -webkit-background-clip: text;
+    background-clip: text; /* Standard */
+
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.cart-icon {
+    margin-left: 8px;
+    font-size: 1.4em;
+}
+.greeting {
+        font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+        letter-spacing: 1px;
+    }
+/* Search Bar */
+.search-bar-container {
+    background-color: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+}
+
+.search-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #e03e00;
+}
+/* General Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+/* Typography */
+h1, h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Products Section */
+.products-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.section-title {
+    font-size: 2.5em;
+    color: #ff9f00;
+    margin-bottom: 30px;
+}
+
+/* Product Grid */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.product {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.product:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Product Info */
+.product h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.product p {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-size: 1.2em;
+    color: #ff6f00;
+    font-weight: bold;
+}
+
+/* Empty Product Message */
+.no-products {
+    text-align: center;
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* Search Button */
+.search-button {
+    padding: 10px 20px;
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #e03e00;
+}
+/* General Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+/* Typography */
+h1, h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Header */
+.store-header {
+    background-color: #ff4500;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.store-logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: white;
+}
+
+.brand-name {
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: linear-gradient( #000000, #ffffff);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background-color: #ffffff;
+  
+    
+    /* Vendor-prefixed background-clip */
+    -webkit-background-clip: text;
+    background-clip: text; /* Standard */
+
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* Search Bar */
+.search-bar-container {
+    background-color: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+}
+
+.search-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #e03e00;
+}
+
+/* Products Section */
+.products-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.section-title {
+    font-size: 2.5em;
+    color: #ff9f00;
+    margin-bottom: 30px;
+}
+
+/* Product Grid */
+.products {
+    display: grid;
+    flex-direction: column;  /* Stack the image and details */
+    align-items: center;
+    margin-bottom: 20px;  /* Space between products */
+    padding: 10px;
+}
+
+.product {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.product:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Empty Product Message */
+.no-products {
+    text-align: center;
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* Footer */
+footer {
+    background-color: #ff9f00;
+    padding: 20px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+footer p {
+    color: white;
+    font-size: 1.2em;
+}
+/* Search Bar */
+.search-bar-container {
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+}
+
+/* Back to Home Button */
+.back-to-home {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-home-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.back-home-btn:hover {
+    background-color: #2980b9;
+}
+/* Navbar Styles */
+.navbar {
+    background-color: #333; /* Dark background color */
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar .brand-name {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar .nav-links li {
+    display: inline;
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-links a:hover {
+    color: #f1c40f; /* Yellow color on hover */
+}
+
+.navbar .auth-links {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar .auth-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.navbar .auth-links a:hover {
+    color: #f1c40f;
+}
+/* Footer Styles */
+.footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px;
+}
+
+.footer .footer-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+}
+
+.footer .footer-links li {
+    display: inline;
+}
+
+.footer .footer-links a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer .footer-links a:hover {
+    color: #f1c40f;
+}
+
+.footer .footer-content {
+    margin-top: 20px;
+}
+/* Product image slider container */
+.product-image-slider {
+    position: relative;
+    width: 100%;
+    height: 300px;  /* Set the height of the slider, adjust as needed */
+    overflow: hidden; /* Prevents overflow of images */
+    border-radius: 8px;
+    display: flex; /* Ensures images are in a row */
+    justify-content: center;
+    align-items: center; /* Ensures all images are centered */
+}
+
+/* Flex container for images */
+.product-image-slider .slider {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    width: 100%;
+}
+
+/* Individual images */
+.product-image-slider .slider img {
+    width: 100%; /* Ensures all images take up full width */
+    height: 100%; /* Ensure they are the same height */
+    object-fit: cover; /* Preserves the aspect ratio of images */
+    border-radius: 8px;
+    flex-shrink: 0; /* Prevent images from shrinking */
+}
+
+/* Navigation arrows (if using sliding) */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
 }
