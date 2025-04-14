@@ -289,14 +289,14 @@ button.add-to-cart-btn:hover {
     font-size: 14px;
 }
 .add-to-cart-btn {
-    background-color: #007BFF; /* Blue background */
-    color: white; /* White text */
-    padding: 10px 20px; /* Add some padding */
-    border: none; /* Remove borders */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-size: 16px; /* Adjust font size */
-    transition: background-color 0.3s ease; /* Smooth transition for hover */
+    background-color: #007BFF; 
+    color: white;
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; 
+    transition: background-color 0.3s ease; 
 }
 
 .add-to-cart-btn:hover {
