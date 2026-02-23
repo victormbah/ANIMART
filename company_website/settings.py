@@ -8,7 +8,7 @@ SECRET_KEY = 'your-secret-key-here'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['animart-21ju.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
