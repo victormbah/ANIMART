@@ -90,6 +90,7 @@
     </div>
 </footer>
 
+<!-- Slider JS -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const sliders = document.querySelectorAll(".product-image-slider");
@@ -99,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const slides = slider.querySelectorAll("img");
         let currentIndex = 0;
 
-        // Ensure slider always has at least one image
         if (slides.length <= 1) return;
 
         slider.querySelector(".prev").addEventListener("click", () => {
