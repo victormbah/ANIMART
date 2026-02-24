@@ -48,7 +48,7 @@
                 <!-- Image Slider -->
                 <div class="product-image-slider">
                     <div class="slider">
-                        {% if product.images.all %}
+                        {% if product.images.exists %}
                             {% for image in product.images.all %}
                                 <img src="{{ image.image.url }}" alt="{{ product.name }}">
                             {% endfor %}
@@ -64,7 +64,7 @@
                 <div class="product-details">
                     <h3>{{ product.name }}</h3>
                     <p>{{ product.description }}</p>
-                    <p class="product-price">₦ {{ product.price }}</p>
+                    <p class="product-price">₦ {{ product.price|floatformat:2 }}</p>
 
                     <!-- Add to Cart -->
                     <form action="{% url 'add_to_cart' product.id %}" method="POST">
@@ -91,25 +91,28 @@
 </footer>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const sliders = document.querySelectorAll(".product-image-slider");
+document.addEventListener("DOMContentLoaded", function () {
+    const sliders = document.querySelectorAll(".product-image-slider");
 
-        sliders.forEach(slider => {
-            const slideContainer = slider.querySelector(".slider");
-            const slides = slider.querySelectorAll("img");
-            let currentIndex = 0;
+    sliders.forEach(slider => {
+        const slideContainer = slider.querySelector(".slider");
+        const slides = slider.querySelectorAll("img");
+        let currentIndex = 0;
 
-            slider.querySelector(".prev").addEventListener("click", () => {
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
-                slideContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
-            });
+        // Ensure slider always has at least one image
+        if (slides.length <= 1) return;
 
-            slider.querySelector(".next").addEventListener("click", () => {
-                currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
-                slideContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
-            });
+        slider.querySelector(".prev").addEventListener("click", () => {
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+            slideContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+        });
+
+        slider.querySelector(".next").addEventListener("click", () => {
+            currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+            slideContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
         });
     });
+});
 </script>
 
 </body>
