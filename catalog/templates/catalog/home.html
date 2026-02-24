@@ -43,39 +43,41 @@
     <h2 class="section-title">Explore Our Products</h2>
 
     <div class="products">
-        {% for product in products %}
-            <div class="product">
-                <!-- Image Slider -->
-                <div class="product-image-slider">
-                    <div class="slider">
-                        {% if product.images.exists %}
-                            {% for image in product.images.all %}
-                                <img src="{{ image.image.url }}" alt="{{ product.name }}">
-                            {% endfor %}
-                        {% else %}
-                            <img src="{% static 'images/default.jpg' %}" alt="No image available">
-                        {% endif %}
-                    </div>
-                    <button class="prev">&#10094;</button>
-                    <button class="next">&#10095;</button>
-                </div>
-
-                <!-- Product Details -->
-                <div class="product-details">
-                    <h3>{{ product.name }}</h3>
-                    <p>{{ product.description }}</p>
-                    <p class="product-price">₦ {{ product.price|floatformat:2 }}</p>
-
-                    <!-- Add to Cart -->
-                    <form action="{% url 'add_to_cart' product.id %}" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
-                    </form>
-                </div>
+       {% for product in products %}
+    <div class="product">
+        <!-- Image Slider -->
+        <div class="product-image-slider">
+            <div class="slider">
+                {% with product.images.all as images %}
+                    {% if images %}
+                        {% for image in images %}
+                            <img src="{{ image.image.url }}" alt="{{ product.name }}">
+                        {% endfor %}
+                    {% else %}
+                        <img src="{% static 'images/default.jpg' %}" alt="No image available">
+                    {% endif %}
+                {% endwith %}
             </div>
-        {% empty %}
-            <p class="no-products">No products found.</p>
-        {% endfor %}
+            <button class="prev">&#10094;</button>
+            <button class="next">&#10095;</button>
+        </div>
+
+        <!-- Product Details -->
+        <div class="product-details">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p class="product-price">₦ {{ product.price|floatformat:2 }}</p>
+
+            <!-- Add to Cart -->
+            <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+{% empty %}
+    <p class="no-products">No products found.</p>
+{% endfor %}
     </div>
 </section>
 
