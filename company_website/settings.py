@@ -8,7 +8,7 @@ SECRET_KEY = 'your-secret-key-here'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['animart-21ju.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -22,6 +22,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,7 +91,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 WSGI_APPLICATION = 'company_website.wsgi.application'
 
-TIMEZONE_NOW = timezone.now()  # Ensures we are using the correct timezone for order timestamps.
+TIMEZONE_NOW = timezone.now() 
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
