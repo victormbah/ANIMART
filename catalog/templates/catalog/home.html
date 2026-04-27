@@ -40,71 +40,48 @@
 
 <!-- Products Section -->
 <section class="products-section">
-    <h2 class="section-title">Explore Our Products</h2>
 
-<div class="products">
-    {% for product in products %}
-
-        <div class="product-card">
-            <div class="product-image">
-                {% with product.images.all as images %}
-                    {% if images %}
-                        <img src="{{ images.0.image.url }}" alt="{{ product.name }}">
-                    {% else %}
-                        <img src="{% static 'images/default.jpg' %}">
-                    {% endif %}
-                {% endwith %}
-            </div>
-
-            <div class="product-info">
-                <h3 class="product-name">{{ product.name }}</h3>
-                <p class="product-price">₦ {{ product.price }}</p>
-
-                <form method="POST" action="{% url 'add_to_cart' product.id %}">
-                    {% csrf_token %}
-                    <button class="add-to-cart-btn">Add to Cart</button>
-                </form>
-            </div>
-        </div>
-
-    {% empty %}
-        <p class="no-products">No products found.</p>
-    {% endfor %}
-</div>
-        <!-- Image Slider -->
-        <div class="product-image-slider">
-            <div class="slider">
-                {% with product.images.all as images %}
-                    {% if images %}
-                        {% for image in images %}
-                            <img src="{{ image.image.url }}" alt="{{ product.name }}">
-                        {% endfor %}
-                    {% else %}
-                        <img src="{% static 'images/default.jpg' %}" alt="No image available">
-                    {% endif %}
-                {% endwith %}
-            </div>
-            <button class="prev">&#10094;</button>
-            <button class="next">&#10095;</button>
-        </div>
-
-        <!-- Product Details -->
-        <div class="product-details">
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.description }}</p>
-            <p class="product-price">₦ {{ product.price|floatformat:2 }}</p>
-
-            <!-- Add to Cart -->
-            <form action="{% url 'add_to_cart' product.id %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" class="add-to-cart-btn">Add to Cart</button>
-            </form>
-        </div>
+    <div class="products-header">
+        <h2>New Arrivals</h2>
+        <p>Discover curated anime collectibles</p>
     </div>
-{% empty %}
-    <p class="no-products">No products found.</p>
-{% endfor %}
+
+    <div class="products">
+
+        {% for product in products %}
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    {% with product.images.all as images %}
+                        {% if images %}
+                            <img src="{{ images.0.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'images/default.jpg' %}">
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <div class="product-meta">
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">₦{{ product.price|floatformat:2 }}</p>
+
+                    <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button class="btn">Add to Bag</button>
+                    </form>
+                </div>
+
+            </div>
+
+        {% empty %}
+            <p class="empty">No products available</p>
+        {% endfor %}
+
     </div>
+
+</section>
+
 </section>
 
 <!-- Footer -->
