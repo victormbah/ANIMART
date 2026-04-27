@@ -43,26 +43,33 @@
     <h2 class="section-title">Explore Our Products</h2>
 
 <div class="products">
-  {% for product in products %}
-  <div class="product-card">
+    {% for product in products %}
 
-    {% with product.images.all.0 as first_image %}
-    <div class="product-image">
-      {% if first_image %}
-        <img src="{{ first_image.image.url }}" alt="{{ product.name }}">
-      {% else %}
-        <img src="{% static 'images/default.jpg' %}">
-      {% endif %}
-    </div>
-    {% endwith %}
+        <div class="product-card">
+            <div class="product-image">
+                {% with product.images.all as images %}
+                    {% if images %}
+                        <img src="{{ images.0.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default.jpg' %}">
+                    {% endif %}
+                {% endwith %}
+            </div>
 
-    <div class="product-info">
-      <h3 class="product-name">{{ product.name }}</h3>
-      <p class="product-price">₦{{ product.price|floatformat:2 }}</p>
-    </div>
+            <div class="product-info">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-price">₦ {{ product.price }}</p>
 
-  </div>
-  {% endfor %}
+                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+
+    {% empty %}
+        <p class="no-products">No products found.</p>
+    {% endfor %}
 </div>
         <!-- Image Slider -->
         <div class="product-image-slider">
