@@ -42,9 +42,28 @@
 <section class="products-section">
     <h2 class="section-title">Explore Our Products</h2>
 
-    <div class="products">
-       {% for product in products %}
-    <div class="product">
+<div class="products">
+  {% for product in products %}
+  <div class="product-card">
+
+    {% with product.images.all.0 as first_image %}
+    <div class="product-image">
+      {% if first_image %}
+        <img src="{{ first_image.image.url }}" alt="{{ product.name }}">
+      {% else %}
+        <img src="{% static 'images/default.jpg' %}">
+      {% endif %}
+    </div>
+    {% endwith %}
+
+    <div class="product-info">
+      <h3 class="product-name">{{ product.name }}</h3>
+      <p class="product-price">₦{{ product.price|floatformat:2 }}</p>
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
         <!-- Image Slider -->
         <div class="product-image-slider">
             <div class="slider">

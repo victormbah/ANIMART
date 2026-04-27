@@ -97,6 +97,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # PAYSTACK CONFIG
-PAYSTACK_PUBLIC_KEY = "pk_live_4f40e905742a556dbe9addf7c2d66e9c62856d2e"  # Replace with your actual public key
+PAYSTACK_PUBLIC_KEY = "pk_live_4f40e905742a556dbe9addf7c2d66e9c62856d2e" 
 PAYSTACK_SECRET_KEY = "sk_live_29d0221488bc487868f9ce3906894dfa82caee59"
 
