@@ -54,6 +54,10 @@ def user_logout(request):
 def profile(request):
     return render(request, 'index.html')
 
+# Shop Page (can be expanded later)
+def shop(request):
+    return render(request, 'catalog/shop.html')
+
 # Add to Cart
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
