@@ -56,7 +56,8 @@ def profile(request):
 
 # Shop Page (can be expanded later)
 def shop(request):
-    return render(request, 'catalog/shop.html')
+    products = Product.objects.all()
+    return render(request, 'catalog/shop.html', {'products': products})
 
 # Add to Cart
 def add_to_cart(request, product_id):
