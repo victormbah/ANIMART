@@ -16,7 +16,7 @@ from django.contrib.auth.forms import UserCreationForm
 # Home Page
 def home(request):
     products = Product.objects.all()
-    return render(request, 'catalog/home.html', {'products': products})
+    return render(request, 'index.html', {'products': products})
 
 # Register Page
 def register(request):
@@ -52,7 +52,7 @@ def user_logout(request):
 # Profile Page (currently redirects to home)
 @login_required
 def profile(request):
-    return render(request, 'catalog/home.html')
+    return render(request, 'index.html')
 
 # Add to Cart
 def add_to_cart(request, product_id):
