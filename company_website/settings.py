@@ -1,12 +1,13 @@
 from pathlib import Path
 import os
 from django.utils import timezone
+from sqlalchemy import false
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'your-secret-key-here'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['animart-21ju.onrender.com']
 
@@ -86,6 +87,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
