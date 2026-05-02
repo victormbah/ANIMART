@@ -1,9 +1,11 @@
 from django.urls import path
 from . import views
-from .views import view_cart
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('', views.home, name='home'),
-    path('cart/', view_cart, name='view_cart'),
+    path('cart/', views.view_cart, name='view_cart'),
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('remove_from_cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('update_cart/<int:product_id>/', views.update_cart, name='update_cart'),
@@ -22,3 +24,6 @@ urlpatterns = [
     path('terms-of-service/', views.terms_of_service_view, name='terms_of_service'),
     path('shop/', views.shop, name='shop'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
