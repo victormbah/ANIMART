@@ -40,6 +40,7 @@ class Product(models.Model):
     stock = models.IntegerField()
     category = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
+    image_name = models.CharField(max_length=100, default='default.jpg')
 
     def save(self, *args, **kwargs):
         if not self.slug:

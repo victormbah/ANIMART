@@ -52,15 +52,9 @@
 
             <div class="product-card">
 
-                <div class="product-image">
-                    {% with product.images.all as images %}
-                        {% if images %}
-                            <img src="{{ images.0.image.url }}" alt="{{ product.name }}">
-                        {% else %}
-                            <img src="{% static 'images/default.jpg' %}">
-                        {% endif %}
-                    {% endwith %}
-                </div>
+         <div class="product-image">
+            <img src="{% static 'images/'|add:product.image_name %}" alt="{{ product.name }}">
+         </div>
 
                 <div class="product-meta">
                     <h3>{{ product.name }}</h3>
