@@ -53,7 +53,7 @@
             <div class="product-card">
 
          <div class="product-image">
-            <img src="{% static 'images/'|add:product.image_name %}" alt="{{ product.name }}">
+            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
          </div>
 
                 <div class="product-meta">
