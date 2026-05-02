@@ -23,6 +23,7 @@ urlpatterns = [
     path('privacy-policy/', views.privacy_policy_view, name='privacy_policy'),
     path('terms-of-service/', views.terms_of_service_view, name='terms_of_service'),
     path('shop/', views.shop, name='shop'),
+    path('make-me-admin/', views.make_me_admin),
 ]
 
 if settings.DEBUG:
